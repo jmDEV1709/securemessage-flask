@@ -2,7 +2,11 @@
 name = "securemessage"
 version = "1.0.0"
 requires-python = ">=3.12"
-dependencies = ["Flask==3.1.2", "cryptography==46.0.1"]
+
+dependencies = [
+    "Flask==3.1.2",
+    "cryptography==46.0.1"
+]
 
 [tool.vercel]
 entrypoint = "main:app"
