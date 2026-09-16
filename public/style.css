@@ -1,1 +1,729 @@
-:root{--bg:#0c171f;--card:#162530;--line:#375165;--text:#f3f6f8;--muted:#aebac4;--accent:#63d2c1;--danger:#ff7d7d}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px Arial,sans-serif}header{padding:27px 20px;background:#152430;font-size:21px;font-weight:800}main{max-width:730px;margin:44px auto;padding:0 18px}.hero span,.tree-head span{color:var(--accent);font-size:13px;font-weight:800;letter-spacing:2px}.hero h1{font-size:56px;line-height:1.02;margin:15px 0 20px}.hero p{color:var(--muted);font-size:18px;line-height:1.55}nav{display:flex;gap:8px;margin-top:28px}.tab{flex:1;background:transparent;color:var(--muted);border:1px solid var(--line);padding:12px;border-radius:8px;cursor:pointer}.tab.active{color:#081416;background:var(--accent);border-color:var(--accent)}.panel,.tree-panel{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:18px;margin-top:12px}.panel h2{margin:0 0 4px}.panel>p{margin:0 0 24px;color:var(--muted)}label{display:block;font-size:13px;font-weight:700;margin:18px 0}textarea,input{display:block;width:100%;margin-top:8px;background:#0f1c25;border:1px solid #496277;color:white;border-radius:7px;padding:13px}textarea{min-height:150px;resize:vertical}.primary{width:100%;padding:16px;border:0;border-radius:7px;background:var(--accent);font-weight:800;cursor:pointer}.hidden{display:none!important}.status{color:var(--muted);padding:18px 0}.status.ok:before{content:'● ';color:var(--accent)}.status.error{color:var(--danger)}.result{margin-top:18px;padding:16px;background:#0f1c25;border-left:4px solid var(--accent);white-space:pre-wrap}.tree-head{display:flex;justify-content:space-between;align-items:center}.tree-head h2{margin:5px 0}.tree-head button{background:transparent;color:white;border:1px solid var(--line);padding:8px 12px;border-radius:6px}.legend{color:var(--muted);font-size:13px;margin:12px 0}.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin:0 5px 0 14px}.root{background:#ffd166}.internal{background:#4fa3ff}.leaf{background:var(--accent)}#tree{overflow:auto;padding:30px 8px;text-align:center}.node{display:inline-flex;flex-direction:column;align-items:center;vertical-align:top}.bubble{min-width:48px;height:48px;padding:0 9px;border-radius:24px;display:flex;align-items:center;justify-content:center;font-weight:800;background:#4fa3ff;border:2px solid #9dccff}.node.top>.bubble{background:#ffd166;color:#17212b;border-color:#ffe6a3}.node.end>.bubble{background:var(--accent);color:#08201b;border-color:#b7fff3}.children{display:flex;gap:22px;margin-top:28px;position:relative}.branch{position:absolute;top:-21px;color:var(--muted);font-size:12px}.left-label{left:24%}.right-label{right:24%}@media(max-width:650px){.hero h1{font-size:40px}main{margin-top:28px}.children{gap:10px}.bubble{min-width:40px;height:40px;font-size:12px}}
+:root {
+    --background: #0c171f;
+    --header: #152430;
+    --card: #162530;
+    --card-dark: #0a2027;
+    --border: #375165;
+    --text: #f3f6f8;
+    --muted: #aebac4;
+    --accent: #63d2c1;
+    --accent-dark: #102d2d;
+    --danger: #ff7d7d;
+    --blue: #2784a8;
+    --purple: #853a9e;
+    --yellow: #f3bd45;
+    --pink: #ff7da5;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* CABEÇALHO */
+
+.topbar {
+    padding: 26px 20px;
+    background: var(--header);
+    font-size: 21px;
+    font-weight: 800;
+}
+
+
+/* CONTEÚDO PRINCIPAL */
+
+main {
+    width: 100%;
+    max-width: 730px;
+    margin: 44px auto;
+    padding: 0 18px 60px;
+}
+
+
+/* HERO */
+
+.hero>span,
+.tree-summary>div>span {
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.hero h1 {
+    margin: 15px 0 20px;
+    font-size: 56px;
+    line-height: 1.02;
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.55;
+}
+
+
+/* ABAS */
+
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin-top: 28px;
+}
+
+.tab {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--muted);
+    font-weight: 700;
+}
+
+.tab.active {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #081416;
+}
+
+
+/* PAINÉIS */
+
+.panel {
+    margin-top: 12px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--card);
+}
+
+.panel h2 {
+    margin: 0 0 4px;
+}
+
+.panel>p {
+    margin: 0 0 24px;
+    color: var(--muted);
+}
+
+label {
+    display: block;
+    margin: 18px 0;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+textarea,
+input {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+    padding: 13px;
+    border: 1px solid #496277;
+    border-radius: 7px;
+    outline: none;
+    background: #0f1c25;
+    color: white;
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+textarea:focus,
+input:focus {
+    border-color: var(--accent);
+}
+
+.primary-button {
+    width: 100%;
+    padding: 16px;
+    border: 0;
+    border-radius: 7px;
+    background: var(--accent);
+    color: #071614;
+    font-weight: 800;
+}
+
+.primary-button:hover {
+    filter: brightness(1.07);
+}
+
+
+/* STATUS DO PYTHON */
+
+.status {
+    padding: 18px 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.status.connected::before {
+    content: "● ";
+    color: var(--accent);
+}
+
+.status.disconnected {
+    color: var(--danger);
+}
+
+
+/* RESULTADO */
+
+.result {
+    margin-top: 18px;
+    padding: 16px;
+    border-left: 4px solid var(--accent);
+    background: #0f1c25;
+    white-space: pre-wrap;
+}
+
+
+/* CARD DA ÁRVORE */
+
+.tree-summary {
+    position: relative;
+    margin-top: 12px;
+    padding: 20px;
+    border: 1px solid #2d7c73;
+    border-radius: 9px;
+    background: var(--accent-dark);
+}
+
+.tree-summary h2 {
+    margin: 7px 0;
+}
+
+.tree-summary p {
+    margin: 0 0 15px;
+    color: #b8d4cf;
+}
+
+.tree-summary button {
+    padding: 9px 16px;
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text);
+    font-weight: 800;
+}
+
+.live-dot {
+    position: absolute;
+    top: 32px;
+    right: 18px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow:
+        0 0 0 7px rgba(99, 210, 193, 0.14);
+}
+
+
+/* FUNDO DO MODAL */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 26px;
+    background: rgba(3, 10, 15, 0.78);
+}
+
+
+/* JANELA DO MODAL */
+
+.modal-card {
+    display: flex;
+    flex-direction: column;
+    width: min(1040px, 96vw);
+    height: min(720px, 92vh);
+    overflow: hidden;
+    border: 1px solid #1d3943;
+    border-radius: 10px;
+    background: #0c232a;
+    box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.55);
+}
+
+
+/* CABEÇALHO DO MODAL */
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid #203b47;
+    background: #182936;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.modal-header button {
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font-weight: 800;
+}
+
+
+/* CONTEÚDO DO MODAL */
+
+.modal-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    padding: 24px;
+}
+
+.modal-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.modal-toolbar p {
+    color: #77eadc;
+    font-size: 13px;
+}
+
+
+/* CONTROLE DE ZOOM */
+
+.zoom-controls {
+    display: flex;
+    flex: none;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid #376273;
+    border-radius: 7px;
+}
+
+.zoom-controls button,
+.zoom-controls span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 43px;
+    height: 38px;
+    padding: 0 10px;
+    border: 0;
+    background: #122f3a;
+    color: white;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.zoom-controls button:hover {
+    background: #1c4655;
+}
+
+
+/* LEGENDA */
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 12px 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend i {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+}
+
+.legend-root {
+    background: var(--yellow);
+}
+
+.legend-internal {
+    background: var(--blue);
+}
+
+.legend-leaf {
+    background: var(--purple);
+}
+
+.edge-zero {
+    color: var(--accent);
+    font-weight: 800;
+}
+
+.edge-one {
+    color: var(--pink);
+    font-weight: 800;
+}
+
+
+/* ÁREA COM ROLAGEM */
+
+.tree-viewport {
+    flex: 1;
+    min-height: 300px;
+    overflow: auto;
+    margin-top: 6px;
+    border: 1px solid #355766;
+    border-radius: 6px;
+    background: var(--card-dark);
+}
+
+#treeCanvas {
+    width: max-content;
+    min-width: 100%;
+    transform-origin: top center;
+    transition: transform 0.15s ease;
+}
+
+#tree {
+    width: max-content;
+    min-width: 100%;
+    padding: 55px 55px 90px;
+    text-align: center;
+}
+
+
+/* ESTRUTURA DA ÁRVORE */
+
+.tree-node {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: top;
+}
+
+.node-bubble {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    min-width: 76px;
+    height: 50px;
+    padding: 4px;
+    border: 2px solid #76c9e8;
+    border-radius: 6px;
+    background: var(--blue);
+    color: white;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.node-bubble strong {
+    overflow: hidden;
+    max-width: 66px;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.node-bubble small {
+    margin-top: 3px;
+    font-size: 10px;
+}
+
+
+/* RAIZ */
+
+.root-node>.node-bubble {
+    border-color: #ffe6a3;
+    background: var(--yellow);
+    color: #17212b;
+}
+
+
+/* FOLHAS */
+
+.leaf-node>.node-bubble {
+    border-color: #cc8ee1;
+    background: var(--purple);
+    color: white;
+}
+
+
+/* FILHOS */
+
+.tree-children {
+    position: relative;
+    display: flex;
+    gap: 48px;
+    margin-top: 52px;
+}
+
+.child-wrapper {
+    position: relative;
+}
+
+
+/* RAMO ESQUERDO, BIT 0 */
+
+.left-child::before {
+    content: "";
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    width: calc(50% + 25px);
+    height: 2px;
+    background: var(--accent);
+    transform: rotate(-20deg);
+    transform-origin: left;
+}
+
+
+/* RAMO DIREITO, BIT 1 */
+
+.right-child::before {
+    content: "";
+    position: absolute;
+    top: -30px;
+    right: 50%;
+    width: calc(50% + 25px);
+    height: 2px;
+    background: var(--pink);
+    transform: rotate(20deg);
+    transform-origin: right;
+}
+
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 650px) {
+    main {
+        margin-top: 28px;
+    }
+
+    .hero h1 {
+        font-size: 40px;
+    }
+
+    .modal {
+        padding: 8px;
+    }
+
+    .modal-card {
+        width: 100%;
+        height: 96vh;
+    }
+
+    .modal-header {
+        padding: 14px;
+    }
+
+    .modal-header h2 {
+        font-size: 16px;
+    }
+
+    .modal-header button {
+        font-size: 10px;
+    }
+
+    .modal-body {
+        padding: 12px;
+    }
+
+    .modal-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .tree-children {
+        gap: 22px;
+    }
+
+    #tree {
+        padding: 45px 30px 70px;
+    }
+}
+
+/* ========================================
+   CORREÇÃO DA ÁRVORE COM SVG
+   ======================================== */
+
+#treeCanvas {
+    width: max-content;
+    min-width: 100%;
+    transform-origin: top center;
+    transition: transform 0.15s ease;
+}
+
+#tree {
+    width: max-content;
+    min-width: 100%;
+    padding: 0;
+    text-align: center;
+}
+
+.huffman-svg {
+    display: block;
+    max-width: none;
+    overflow: visible;
+}
+
+
+/* GALHOS */
+
+.tree-edge {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+}
+
+.edge-left {
+    stroke: #63d2c1;
+}
+
+.edge-right {
+    stroke: #ff7da5;
+}
+
+
+/* NÚMEROS NOS GALHOS */
+
+.bit-label {
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    text-anchor: middle;
+    paint-order: stroke;
+    stroke: #0a2027;
+    stroke-width: 4px;
+    stroke-linejoin: round;
+}
+
+.bit-zero {
+    fill: #63d2c1;
+}
+
+.bit-one {
+    fill: #ff7da5;
+}
+
+
+/* FORMATO DOS NÓS */
+
+.svg-node rect {
+    stroke-width: 2;
+}
+
+
+/* RAIZ AMARELA */
+
+.svg-root-node rect {
+    fill: #f3bd45;
+    stroke: #ffe6a3;
+}
+
+.svg-root-node text {
+    fill: #17212b;
+}
+
+
+/* NÓS INTERNOS AZUIS */
+
+.svg-internal-node rect {
+    fill: #2784a8;
+    stroke: #76c9e8;
+}
+
+.svg-internal-node text {
+    fill: #ffffff;
+}
+
+
+/* FOLHAS ROXAS */
+
+.svg-leaf-node rect {
+    fill: #853a9e;
+    stroke: #cc8ee1;
+}
+
+.svg-leaf-node text {
+    fill: #ffffff;
+}
+
+
+/* TEXTO DOS NÓS */
+
+.node-title {
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.node-path {
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+
+/*
+ * Desativa as linhas antigas feitas
+ * por CSS, caso ainda estejam no arquivo.
+ */
+.child-wrapper::before,
+.left-child::before,
+.right-child::before {
+    display: none !important;
+}
