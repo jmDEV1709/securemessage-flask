@@ -145,7 +145,6 @@ function prepareTree(tree, title, description) {
   if ($('#treeSummaryText')) $('#treeSummaryText').textContent = description;
   if ($('#modalDescription')) $('#modalDescription').textContent = description;
   $('#treeSummary')?.classList.remove('hidden');
-  openTreeModal();
 }
 
 function openTreeModal() {
