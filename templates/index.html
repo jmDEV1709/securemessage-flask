@@ -9,20 +9,26 @@
     <title>SecureMessage</title>
 
     <link rel="stylesheet" href="/style.css">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="public/favicon.ico">
     <script src="/app.js" defer></script>
 </head>
 
 <body>
 
+    <!-- CABEÇALHO -->
+
     <header class="topbar">
         SecureMessage
     </header>
 
+
     <main>
 
+        <!-- APRESENTAÇÃO -->
+
         <section class="hero">
-            <span>CODIFICAÇÃO LOCAL</span>
+
+            <span>CODIFICAÇÃO COM ÁRVORE BINÁRIA</span>
 
             <h1>
                 Transforme sua<br>
@@ -31,13 +37,17 @@
             </h1>
 
             <p>
-                Escreva o conteúdo, visualize a estrutura da
-                árvore binária criada e salve o resultado em
-                um arquivo local.
+                Escreva o conteúdo, visualize a árvore binária
+                de Huffman e salve o resultado em um documento
+                protegido por senha.
             </p>
+
         </section>
 
-        <nav class="tabs">
+
+        <!-- ABAS -->
+
+        <nav class="tabs" aria-label="Funcionalidades do SecureMessage">
 
             <button class="tab active" data-tab="create" type="button">
                 Preparar mensagem
@@ -47,73 +57,251 @@
                 Ler arquivo
             </button>
 
+            <button class="tab" data-tab="history" type="button">
+                Histórico BST
+            </button>
+
         </nav>
 
-        <!-- CRIAÇÃO DA MENSAGEM -->
+
+        <!-- ==========================================
+         CRIAÇÃO DA MENSAGEM
+         ========================================== -->
 
         <section id="create" class="panel">
+
             <h2>Preparar mensagem</h2>
 
             <p>
-                A mensagem é processada pelo motor Python.
+                A mensagem é codificada com Huffman e protegida
+                pelo motor Python com AES-GCM.
             </p>
 
             <label for="message">
                 Conteúdo da mensagem
             </label>
 
-            <textarea id="message" placeholder="Digite sua mensagem"></textarea>
+            <textarea id="message" placeholder="Digite sua mensagem" maxlength="10000"></textarea>
 
             <label for="password">
-                Senha
+                Senha do documento
             </label>
 
-            <input id="password" type="password" placeholder="Digite uma senha">
+            <input id="password" type="password" placeholder="Digite uma senha" autocomplete="new-password">
+
+            <small class="field-hint">
+                Guarde a senha em segurança. Ela será necessária
+                para recuperar a mensagem.
+            </small>
 
             <button class="primary-button" id="encrypt" type="button">
                 CRIPTOGRAFAR E SALVAR ARQUIVO
             </button>
+
         </section>
 
-        <!-- LEITURA DA MENSAGEM -->
+
+        <!-- ==========================================
+         LEITURA DA MENSAGEM
+         ========================================== -->
 
         <section id="open" class="panel hidden">
+
             <h2>Ler arquivo existente</h2>
 
             <p>
-                Selecione o arquivo .txt e informe a senha.
+                Selecione o documento gerado pelo SecureMessage
+                e informe a senha utilizada na criação.
             </p>
 
             <label for="file">
-                Arquivo
+                Documento criptografado
             </label>
 
-            <input id="file" type="file" accept=".txt,application/json">
+            <input id="file" type="file" accept=".txt,application/json,text/plain">
 
             <label for="openPassword">
-                Senha
+                Senha do documento
             </label>
 
-            <input id="openPassword" type="password" placeholder="Digite a senha do arquivo">
+            <input id="openPassword" type="password" placeholder="Digite a senha do arquivo"
+                autocomplete="current-password">
 
             <button class="primary-button" id="decrypt" type="button">
                 ABRIR MENSAGEM
             </button>
 
-            <div id="result" class="result hidden"></div>
+            <div id="result" class="result hidden" aria-live="polite"></div>
+
         </section>
 
-        <!-- STATUS DO PYTHON -->
 
-        <div id="status" class="status">
+        <!-- ==========================================
+         HISTÓRICO COM BST
+         ========================================== -->
+
+        <section id="history" class="panel hidden">
+
+            <div class="history-heading">
+
+                <div>
+
+                    <span class="section-tag">
+                        ÁRVORE BINÁRIA DE BUSCA
+                    </span>
+
+                    <h2>
+                        Histórico de documentos
+                    </h2>
+
+                    <p>
+                        Os registros são inseridos em uma BST usando
+                        a data e o horário como chave. Datas menores
+                        ficam à esquerda e datas maiores ficam à direita.
+                    </p>
+
+                </div>
+
+                <span id="historyCount" class="history-count">
+                    0 registros
+                </span>
+
+            </div>
+
+
+            <div class="history-explanation">
+
+                <strong>
+                    Como funciona?
+                </strong>
+
+                <p>
+                    O histórico armazena somente o nome do documento,
+                    a operação realizada e o horário. A mensagem, a
+                    senha, os bits e a árvore Huffman não são guardados
+                    no histórico.
+                </p>
+
+            </div>
+
+
+            <div class="history-actions">
+
+                <button id="refreshHistory" class="secondary-button" type="button">
+                    ATUALIZAR HISTÓRICO
+                </button>
+
+                <button id="clearHistory" class="danger-button" type="button">
+                    LIMPAR HISTÓRICO
+                </button>
+
+            </div>
+
+
+            <div id="historyEmpty" class="history-empty">
+                Nenhuma mensagem foi criada ou aberta
+                neste navegador.
+            </div>
+
+
+            <div id="historyList" class="history-list hidden" aria-live="polite"></div>
+
+
+            <!-- PERCURSOS DA BST -->
+
+            <div class="traversal-panel">
+
+                <h3>
+                    Percursos da árvore binária de busca
+                </h3>
+
+                <p>
+                    As sequências abaixo são calculadas pelo
+                    código Python da BST.
+                </p>
+
+
+                <div class="traversal-grid">
+
+                    <article>
+
+                        <strong>
+                            Pré-ordem
+                        </strong>
+
+                        <span>
+                            raiz → esquerda → direita
+                        </span>
+
+                        <code id="preOrderResult">
+              Nenhum registro
+            </code>
+
+                    </article>
+
+
+                    <article>
+
+                        <strong>
+                            Em ordem
+                        </strong>
+
+                        <span>
+                            esquerda → raiz → direita
+                        </span>
+
+                        <code id="inOrderResult">
+              Nenhum registro
+            </code>
+
+                        <small>
+                            Em uma BST organizada por horário, este
+                            percurso devolve os registros em ordem
+                            cronológica.
+                        </small>
+
+                    </article>
+
+
+                    <article>
+
+                        <strong>
+                            Pós-ordem
+                        </strong>
+
+                        <span>
+                            esquerda → direita → raiz
+                        </span>
+
+                        <code id="postOrderResult">
+              Nenhum registro
+            </code>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- STATUS DO BACKEND -->
+
+        <div id="status" class="status" aria-live="polite">
             Verificando motor Python...
         </div>
 
-        <!-- CARD PARA REABRIR A ÁRVORE -->
+
+        <!-- CARD PARA REABRIR A ÁRVORE HUFFMAN -->
 
         <section id="treeSummary" class="tree-summary hidden">
+
             <div>
-                <span>LEITURA AO VIVO</span>
+
+                <span>
+                    VISUALIZAÇÃO DA ESTRUTURA
+                </span>
 
                 <h2 id="treeSummaryTitle">
                     Árvore construída
@@ -122,20 +310,26 @@
                 <p id="treeSummaryText">
                     Estrutura pronta para visualização.
                 </p>
+
             </div>
 
-            <i class="live-dot"></i>
+            <i class="live-dot" aria-hidden="true"></i>
 
             <button id="openTreeModal" type="button">
                 ABRIR VISUALIZAÇÃO AMPLIADA
             </button>
+
         </section>
 
     </main>
 
-    <!-- MODAL DA ÁRVORE -->
+
+    <!-- ==========================================
+       MODAL DA ÁRVORE HUFFMAN
+       ========================================== -->
 
     <div id="treeModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
         <div class="modal-card">
 
             <div class="modal-header">
@@ -150,6 +344,7 @@
 
             </div>
 
+
             <div class="modal-body">
 
                 <div class="modal-toolbar">
@@ -159,9 +354,10 @@
                         binários de cada caractere.
                     </p>
 
-                    <div class="zoom-controls">
 
-                        <button id="zoomOut" type="button" aria-label="Diminuir zoom">
+                    <div class="zoom-controls" aria-label="Controles de zoom">
+
+                        <button id="zoomOut" type="button" aria-label="Diminuir zoom" title="Diminuir zoom">
                             −
                         </button>
 
@@ -169,17 +365,20 @@
                             100%
                         </span>
 
-                        <button id="zoomReset" type="button">
+                        <button id="zoomReset" type="button" aria-label="Restaurar zoom" title="Restaurar zoom">
                             100%
                         </button>
 
-                        <button id="zoomIn" type="button" aria-label="Aumentar zoom">
+                        <button id="zoomIn" type="button" aria-label="Aumentar zoom" title="Aumentar zoom">
                             +
                         </button>
 
                     </div>
 
                 </div>
+
+
+                <!-- LEGENDA DA ÁRVORE -->
 
                 <div class="legend">
 
@@ -208,14 +407,23 @@
 
                 </div>
 
+
+                <!-- ÁREA SVG DA ÁRVORE -->
+
                 <div class="tree-viewport">
+
                     <div id="treeCanvas">
+
                         <div id="tree"></div>
+
                     </div>
+
                 </div>
 
             </div>
+
         </div>
+
     </div>
 
 </body>

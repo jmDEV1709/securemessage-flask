@@ -10,7 +10,9 @@ from python_core.secmsg_handler import (
     SecmsgFileError,
     SecmsgHandler,
 )
-
+from python_core.bst_history import (
+    HistoryBST,
+)
 
 app = Flask(
     __name__,
@@ -27,6 +29,7 @@ def home():
     return render_template(
         "index.html"
     )
+
 
 
 @app.get("/style.css")
@@ -157,7 +160,100 @@ def decrypt():
                 "a mensagem protegida."
             ),
         ), 500
+@app.post("/api/history")
+def history():
+    """
+    Recebe os registros guardados pelo navegador,
+    monta uma BST e devolve:
 
+    - histórico em ordem cronológica;
+    - pré-ordem;
+    - pós-ordem;
+    - estrutura serializada da BST.
+    """
+    try:
+        data = request.get_json(
+            silent=True
+        ) or {}
+
+        records = data.get(
+            "records",
+            [],
+        )
+
+        history_tree = (
+            HistoryBST.from_records(
+                records
+            )
+        )
+
+        return jsonify(
+            size=history_tree.size,
+            in_order=history_tree.in_order(),
+            pre_order=history_tree.pre_order(),
+            post_order=history_tree.post_order(),
+            tree=history_tree.serialize(),
+        )
+
+    except ValueError as error:
+        return jsonify(
+            error=str(error),
+        ), 400
+
+
+@app.post("/api/history/search")
+def search_history():
+    """
+    Busca um registro pelo ID.
+
+    O histórico é reconstruído como uma BST
+    antes da operação.
+    """
+    try:
+        data = request.get_json(
+            silent=True
+        ) or {}
+
+        records = data.get(
+            "records",
+            [],
+        )
+
+        record_id = data.get(
+            "id",
+            "",
+        )
+
+        if not isinstance(record_id, str):
+            raise ValueError(
+                "ID de busca inválido."
+            )
+
+        history_tree = (
+            HistoryBST.from_records(
+                records
+            )
+        )
+
+        found = history_tree.find_by_id(
+            record_id
+        )
+
+        if found is None:
+            return jsonify(
+                found=False,
+                record=None,
+            )
+
+        return jsonify(
+            found=True,
+            record=found,
+        )
+
+    except ValueError as error:
+        return jsonify(
+            error=str(error),
+        ), 400
 
 @app.errorhandler(413)
 def too_large(_error):
